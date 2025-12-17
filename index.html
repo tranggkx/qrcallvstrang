@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Thanh toán QR</title>
+  <title>Thanh toan QR</title>
   <link rel="preconnect" href="https://img.vietqr.io">
   <style>
     :root{
@@ -34,68 +34,78 @@
       box-shadow:0 30px 70px rgba(0,0,0,.6);
     }
     .title{
-      text-align:center;font-size:24px;
-      font-weight:700;line-height:1.4;margin-bottom:24px;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      margin-bottom:24px;
     }
     .grid{
       display:grid;
       grid-template-columns:minmax(280px,420px) minmax(260px,320px);
-      gap:24px;align-items:flex-start;
+      gap:24px;
     }
     @media(max-width:900px){.grid{grid-template-columns:1fr;}}
 
     .qr-box{
-      background:#020617;border-radius:18px;
+      background:#020617;
+      border-radius:18px;
       border:1px dashed var(--border);
-      height:360px;display:flex;
-      align-items:center;justify-content:center;
-      position:relative;overflow:hidden;
+      height:360px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
     }
-    .qr-box img{
-      max-width:95%;
-      max-height:95%;
-      display:block;
-    }
+    .qr-box img{max-width:95%;max-height:95%;}
     .qr-placeholder{
-      position:absolute;inset:0;
-      display:flex;align-items:center;
-      justify-content:center;color:var(--muted);
-      font-size:15px;pointer-events:none;
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
     }
 
     .info-row{
-      display:grid;grid-template-columns:auto 1fr auto;
-      align-items:center;column-gap:12px;
-      margin-bottom:10px;font-size:15px;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
     }
     .info-label{color:var(--muted);}
-    .info-value{text-align:right;font-weight:500;}
+    .info-value{text-align:right;}
 
     .btn-copy{
-      padding:6px 12px;border-radius:999px;
+      padding:6px 12px;
+      border-radius:999px;
       border:1px solid var(--border);
-      background:#020617;color:var(--ink);
-      font-size:13px;cursor:pointer;transition:.12s;
+      background:#020617;
+      color:var(--ink);
+      cursor:pointer;
     }
-    .btn-copy:hover{background:#111827;border-color:var(--brand);}
-    .btn-copy:active{transform:scale(.97);}
 
-    .action-row{margin-top:20px;display:flex;gap:12px;}
-    .amount-input{
-      flex:1;padding:12px 14px;border-radius:999px;
-      border:1px solid var(--border);
-      background:#020617;color:var(--ink);font-size:14px;
+    .action-row{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
     }
-    .amount-input:focus{
-      border-color:var(--brand);
-      box-shadow:0 0 0 1px rgba(34,197,94,.25);
+    .amount-input{
+      flex:1;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#020617;
+      color:var(--ink);
     }
     .btn-primary{
-      padding:12px 18px;border-radius:999px;border:none;
+      padding:12px 18px;
+      border-radius:999px;
+      border:none;
       background:linear-gradient(135deg,#22c55e,#16a34a);
-      color:#ecfdf5;font-weight:600;font-size:14px;
-      cursor:pointer;white-space:nowrap;
-      box-shadow:0 12px 30px rgba(34,197,94,.25);
+      color:#ecfdf5;
+      font-weight:600;
+      cursor:pointer;
     }
   </style>
 </head>
@@ -103,147 +113,129 @@
 <body>
 <div class="wrap">
   <div class="card">
-    <div class="title">
-      Thanh toán QR để được gọi video với em Lê<br>Thị Trang
-    </div>
+    <div class="title">Thanh toan QR de goi video</div>
 
     <div class="grid">
 
-      <!-- QR ONLY -->
-      <div>
-        <div class="qr-box">
-          <img id="qrImage" alt="" style="display:none;">
-          <div id="qrPlaceholder" class="qr-placeholder">
-            QR sẽ hiển thị ở đây
-          </div>
-        </div>
+      <!-- QR -->
+      <div class="qr-box">
+        <img id="qrImage" style="display:none">
+        <div id="qrPlaceholder" class="qr-placeholder">QR se hien thi o day</div>
       </div>
 
       <!-- INFO -->
       <div>
-
         <div class="info-row">
-          <div class="info-label">Ngân hàng:</div>
+          <div class="info-label">Ngan hang:</div>
           <div id="bankName" class="info-value">OCB</div>
           <button class="btn-copy" data-copy="bankName">Copy</button>
         </div>
 
         <div class="info-row">
-          <div class="info-label">Số TK:</div>
-          <div id="accountNumber" class="info-value">0030104444444444</div>
+          <div class="info-label">So TK:</div>
+          <div id="accountNumber" class="info-value">—</div>
           <button class="btn-copy" data-copy="accountNumber">Copy</button>
         </div>
 
         <div class="info-row">
-          <div class="info-label">Số tiền:</div>
+          <div class="info-label">So tien:</div>
           <div id="amountText" class="info-value">—</div>
           <button class="btn-copy" data-copy="amountText">Copy</button>
         </div>
 
         <div class="info-row">
-          <div class="info-label">Nội dung:</div>
+          <div class="info-label">Noi dung:</div>
           <div id="descriptionText" class="info-value">—</div>
           <button class="btn-copy" data-copy="descriptionText">Copy</button>
         </div>
 
         <div class="action-row">
-          <!-- đổi type="text" để format 20.000 -->
-          <input id="amountInput" class="amount-input" type="text" placeholder="Nhập số tiền (VND)">
-          <button id="btnCreate" class="btn-primary">Tạo QR</button>
+          <input id="amountInput" class="amount-input" placeholder="Nhap so tien (VND)">
+          <button id="btnCreate" class="btn-primary">Tao QR</button>
         </div>
-
       </div>
+
     </div>
   </div>
 </div>
 
 <script>
-const BANK_CODE    = "OCB";
-const ACCOUNT_NO   = "0030104444444444";
+const BANK_CODE = "OCB";
+
+const ACCOUNT_LIST = [
+  "0030104444444444",
+  "0185101123123123"
+];
+
 const ACCOUNT_NAME = "LE THI TRANG";
 
-const amountInput      = document.getElementById("amountInput");
-const amountText       = document.getElementById("amountText");
-const descriptionText  = document.getElementById("descriptionText");
-const qrImage          = document.getElementById("qrImage");
-const qrPlaceholder    = document.getElementById("qrPlaceholder");
-const btnCreate        = document.getElementById("btnCreate");
+const amountInput = document.getElementById("amountInput");
+const amountText = document.getElementById("amountText");
+const descriptionText = document.getElementById("descriptionText");
+const accountNumberEl = document.getElementById("accountNumber");
+const qrImage = document.getElementById("qrImage");
+const qrPlaceholder = document.getElementById("qrPlaceholder");
+const btnCreate = document.getElementById("btnCreate");
 
 function formatCurrency(v){
-  v = Number(v || 0);
-  if(!v) return "";
-  return v.toLocaleString("vi-VN"); // 20000 -> 20.000
+  return Number(v).toLocaleString("vi-VN");
 }
 
-// đọc số từ ô input (bỏ hết ký tự không phải số)
-function getAmountFromInput(){
+function getAmount(){
+  return Number(amountInput.value.replace(/[^\d]/g,""));
+}
+
+amountInput.addEventListener("input",()=>{
   const raw = amountInput.value.replace(/[^\d]/g,"");
-  return raw ? Number(raw) : 0;
+  amountInput.value = raw ? formatCurrency(raw) : "";
+});
+
+const ADDINFO_POOL = ["Cafe","Tra da","An toi","An dem","Moi cafe","Nuoc ngot","ck","lixi"];
+
+function randomDesc(){
+  return ADDINFO_POOL[Math.floor(Math.random()*ADDINFO_POOL.length)];
 }
 
-// format ngay khi gõ
-function handleAmountInput(){
-  const raw = amountInput.value.replace(/[^\d]/g,"");
-  if(!raw){
-    amountInput.value = "";
-    return;
-  }
-  const num = Number(raw);
-  amountInput.value = formatCurrency(num);
+function randomAccount(){
+  return ACCOUNT_LIST[Math.floor(Math.random()*ACCOUNT_LIST.length)];
 }
 
-amountInput.addEventListener("input", handleAmountInput);
-
-function generateDescription(){
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth()+1).padStart(2,"0");
-  const d = String(now.getDate()).padStart(2,"0");
-  const rand = Math.floor(1000 + Math.random()*9000);
-  return `HD${y}${m}${d}-${rand}`;
-}
-
-function buildQrUrl(amount, description){
-  // QR ONLY – chỉ mã QR, không logo/chữ
-  const base = `https://img.vietqr.io/image/${BANK_CODE}-${ACCOUNT_NO}-qr_only.png`;
-  const params = new URLSearchParams({
-    amount: amount,
-    addInfo: description,
+function buildQr(account, amount, desc){
+  const base = `https://img.vietqr.io/image/${BANK_CODE}-${account}-qr_only.png`;
+  const p = new URLSearchParams({
+    amount,
+    addInfo: desc,
     accountName: ACCOUNT_NAME
   });
-  return `${base}?${params.toString()}`;
+  return `${base}?${p.toString()}`;
 }
 
-btnCreate.addEventListener("click", () => {
-  const amount = getAmountFromInput();
-  if(!amount || amount <= 0){
-    alert("Nhập số tiền hợp lệ.");
-    return;
-  }
+btnCreate.onclick = ()=>{
+  const amount = getAmount();
+  if(!amount) return alert("Nhap so tien hop le");
 
-  const desc = generateDescription();
-  amountText.textContent = `${formatCurrency(amount)} VND`;
+  const acc = randomAccount();
+  const desc = randomDesc();
+
+  accountNumberEl.textContent = acc;
+  amountText.textContent = formatCurrency(amount)+" VND";
   descriptionText.textContent = desc;
 
-  const qrUrl = buildQrUrl(amount, desc);
-  qrImage.src = qrUrl;
+  qrImage.src = buildQr(acc, amount, desc);
   qrImage.style.display = "block";
   qrPlaceholder.style.display = "none";
-});
+};
 
-document.querySelectorAll(".btn-copy").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const id = btn.getAttribute("data-copy");
-    const val = document.getElementById(id).textContent;
-    if(!val || val === "—"){
-      alert("Chưa có dữ liệu để copy.");return;
-    }
-    navigator.clipboard.writeText(val);
-    btn.textContent = "Đã copy";
-    setTimeout(()=>btn.textContent="Copy",900);
-  });
+document.querySelectorAll(".btn-copy").forEach(b=>{
+  b.onclick = ()=>{
+    const id = b.dataset.copy;
+    const t = document.getElementById(id).textContent;
+    if(t==="—") return;
+    navigator.clipboard.writeText(t);
+    b.textContent="Da copy";
+    setTimeout(()=>b.textContent="Copy",800);
+  }
 });
 </script>
-
 </body>
 </html>
