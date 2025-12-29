@@ -127,7 +127,7 @@
       <div>
         <div class="info-row">
           <div class="info-label">Ngan hang:</div>
-          <div id="bankName" class="info-value">OCB</div>
+          <div id="bankName" class="info-value">—</div>
           <button class="btn-copy" data-copy="bankName">Copy</button>
         </div>
 
@@ -160,23 +160,33 @@
 </div>
 
 <script>
-const BANK_CODE = "OCB";
-
-const ACCOUNT_LIST = [
-  "0030104444444444",
-  "0185101123123123"
+/* ====== BANK DATA ====== */
+const BANKS = [
+  {
+    code: "OCB",
+    name: "OCB",
+    accounts: ["0185101123123123"]
+  },
+  {
+    code: "STB",
+    name: "Sacombank",
+    accounts: ["022359159999"]
+  }
 ];
 
 const ACCOUNT_NAME = "LE THI TRANG";
 
+/* ====== ELEMENTS ====== */
 const amountInput = document.getElementById("amountInput");
 const amountText = document.getElementById("amountText");
 const descriptionText = document.getElementById("descriptionText");
 const accountNumberEl = document.getElementById("accountNumber");
+const bankNameEl = document.getElementById("bankName");
 const qrImage = document.getElementById("qrImage");
 const qrPlaceholder = document.getElementById("qrPlaceholder");
 const btnCreate = document.getElementById("btnCreate");
 
+/* ====== HELPERS ====== */
 function formatCurrency(v){
   return Number(v).toLocaleString("vi-VN");
 }
@@ -196,12 +206,12 @@ function randomDesc(){
   return ADDINFO_POOL[Math.floor(Math.random()*ADDINFO_POOL.length)];
 }
 
-function randomAccount(){
-  return ACCOUNT_LIST[Math.floor(Math.random()*ACCOUNT_LIST.length)];
+function randomBank(){
+  return BANKS[Math.floor(Math.random()*BANKS.length)];
 }
 
-function buildQr(account, amount, desc){
-  const base = `https://img.vietqr.io/image/${BANK_CODE}-${account}-qr_only.png`;
+function buildQr(bankCode, account, amount, desc){
+  const base = `https://img.vietqr.io/image/${bankCode}-${account}-qr_only.png`;
   const p = new URLSearchParams({
     amount,
     addInfo: desc,
@@ -210,22 +220,26 @@ function buildQr(account, amount, desc){
   return `${base}?${p.toString()}`;
 }
 
+/* ====== ACTION ====== */
 btnCreate.onclick = ()=>{
   const amount = getAmount();
   if(!amount) return alert("Nhap so tien hop le");
 
-  const acc = randomAccount();
+  const bank = randomBank();
+  const account = bank.accounts[Math.floor(Math.random()*bank.accounts.length)];
   const desc = randomDesc();
 
-  accountNumberEl.textContent = acc;
+  bankNameEl.textContent = bank.name;
+  accountNumberEl.textContent = account;
   amountText.textContent = formatCurrency(amount)+" VND";
   descriptionText.textContent = desc;
 
-  qrImage.src = buildQr(acc, amount, desc);
+  qrImage.src = buildQr(bank.code, account, amount, desc);
   qrImage.style.display = "block";
   qrPlaceholder.style.display = "none";
 };
 
+/* ====== COPY ====== */
 document.querySelectorAll(".btn-copy").forEach(b=>{
   b.onclick = ()=>{
     const id = b.dataset.copy;
