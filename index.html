@@ -74,7 +74,7 @@
       margin-bottom:10px;
     }
     .info-label{color:var(--muted);}
-    .info-value{text-align:right;}
+    .info-value{text-align:right;word-break:break-all;}
 
     .btn-copy{
       padding:6px 12px;
@@ -113,45 +113,45 @@
 <body>
 <div class="wrap">
   <div class="card">
-    <div class="title">Thanh toan QR de goi video với Lê Thị Trang ạ</div>
+    <div class="title">Thanh toán QR</div>
 
     <div class="grid">
 
       <!-- QR -->
       <div class="qr-box">
         <img id="qrImage" style="display:none">
-        <div id="qrPlaceholder" class="qr-placeholder">QR se hien thi o day</div>
+        <div id="qrPlaceholder" class="qr-placeholder">QR sẽ hiển thị ở đây</div>
       </div>
 
       <!-- INFO -->
       <div>
         <div class="info-row">
-          <div class="info-label">Ngan hang:</div>
+          <div class="info-label">Ngân hàng:</div>
           <div id="bankName" class="info-value">—</div>
           <button class="btn-copy" data-copy="bankName">Copy</button>
         </div>
 
         <div class="info-row">
-          <div class="info-label">So TK:</div>
+          <div class="info-label">Số TK:</div>
           <div id="accountNumber" class="info-value">—</div>
           <button class="btn-copy" data-copy="accountNumber">Copy</button>
         </div>
 
         <div class="info-row">
-          <div class="info-label">So tien:</div>
+          <div class="info-label">Số tiền:</div>
           <div id="amountText" class="info-value">—</div>
           <button class="btn-copy" data-copy="amountText">Copy</button>
         </div>
 
         <div class="info-row">
-          <div class="info-label">Noi dung:</div>
+          <div class="info-label">Nội dung:</div>
           <div id="descriptionText" class="info-value">—</div>
           <button class="btn-copy" data-copy="descriptionText">Copy</button>
         </div>
 
         <div class="action-row">
-          <input id="amountInput" class="amount-input" placeholder="Nhap so tien (VND)">
-          <button id="btnCreate" class="btn-primary">Tao QR</button>
+          <input id="amountInput" class="amount-input" placeholder="Nhập số tiền (VND)">
+          <button id="btnCreate" class="btn-primary">Tạo QR</button>
         </div>
       </div>
 
@@ -200,10 +200,13 @@ amountInput.addEventListener("input",()=>{
   amountInput.value = raw ? formatCurrency(raw) : "";
 });
 
-const ADDINFO_POOL = ["Cafe","Tra da","An toi","An dem","Moi cafe","Nuoc ngot","ck","lixi"];
-
-function randomDesc(){
-  return ADDINFO_POOL[Math.floor(Math.random()*ADDINFO_POOL.length)];
+/* ====== RANDOM SỐ KIỂU 22850581872671318016 ====== */
+function randomNumericDesc(length = 20){
+  let s = "";
+  for(let i=0;i<length;i++){
+    s += Math.floor(Math.random()*10);
+  }
+  return s;
 }
 
 function randomBank(){
@@ -217,21 +220,24 @@ function buildQr(bankCode, account, amount, desc){
     addInfo: desc,
     accountName: ACCOUNT_NAME
   });
-  return `${base}?${p.toString()}`;
+  return `${base}?${p.toString()}&_t=${Date.now()}`;
 }
 
 /* ====== ACTION ====== */
 btnCreate.onclick = ()=>{
   const amount = getAmount();
-  if(!amount) return alert("Nhap so tien hop le");
+  if(!amount || amount < 1000){
+    alert("Nhập số tiền hợp lệ (>= 1.000 VND)");
+    return;
+  }
 
   const bank = randomBank();
   const account = bank.accounts[Math.floor(Math.random()*bank.accounts.length)];
-  const desc = randomDesc();
+  const desc = randomNumericDesc(20);
 
   bankNameEl.textContent = bank.name;
   accountNumberEl.textContent = account;
-  amountText.textContent = formatCurrency(amount)+" VND";
+  amountText.textContent = formatCurrency(amount) + " VND";
   descriptionText.textContent = desc;
 
   qrImage.src = buildQr(bank.code, account, amount, desc);
@@ -246,7 +252,7 @@ document.querySelectorAll(".btn-copy").forEach(b=>{
     const t = document.getElementById(id).textContent;
     if(t==="—") return;
     navigator.clipboard.writeText(t);
-    b.textContent="Da copy";
+    b.textContent="Đã copy";
     setTimeout(()=>b.textContent="Copy",800);
   }
 });
